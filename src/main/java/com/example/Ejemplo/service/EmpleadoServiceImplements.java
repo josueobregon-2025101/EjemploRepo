@@ -5,6 +5,7 @@ import com.example.Ejemplo.repository.EmpleadoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpleadoServiceImplements implements EmpleadoService{
@@ -31,7 +32,20 @@ public  EmpleadoServiceImplements(EmpleadoRepository empleadoRepository){
 
     @Override
     public Empleado updateEmpleado(Integer id, Empleado empleado) {
+    //Optional es un contenedor que puede o no tener objetos, evita errores si esta vacio.
+    Optional<Empleado> empleadoExistente = empleadoRepository.findById(id);
+    if(empleadoExistente.isPresent()){
+        Empleado empleadoNew = empleadoExistente.get();
+        empleadoNew.setNombreEmpleado(empleado.getNombreEmpleado());
+        empleadoNew.setApellidoEmpleado(empleado.getApellidoEmpleado());
+        empleadoNew.setPuestoEmpleado(empleado.getPuestoEmpleado());
+        empleadoNew.setEmailEmpleado(empleado.getEmailEmpleado());
+
+        return empleadoRepository.save(empleadoNew);
+    }else{
         return null;
+    }
+
     }
 
     @Override
