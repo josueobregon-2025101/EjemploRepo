@@ -33,14 +33,48 @@ public class EmpleadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarEmpleado(@PathVariable Integer id,@RequestBody Empleado empleado){
+       try {
+           Empleado actualizado = empleadoService.updateEmpleado(id,empleado);
+           if (actualizado != null ){
+               return ResponseEntity.ok(actualizado);
+           }
+           else {
+               return ResponseEntity.status(404).body("No se encontro el empleado");
+           }
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
+    }
 
-        Empleado actualizado = empleadoService.updateEmpleado(id,empleado);
-        if (actualizado != null ){
-            return ResponseEntity.ok(actualizado);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEmpleado(@PathVariable Integer id){
+        Empleado empleado = empleadoService.getEmpleadoById(id);
+        if(empleado != null){
+            try {
+                empleadoService.deleteEmpleado(id);
+                return ResponseEntity.ok("Se elimino el Empleado " + id);
+            }catch (IllegalArgumentException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }else{
+            return ResponseEntity.status(404).body("No se encontro el empleado " + id);
         }
-        else {
-            return ResponseEntity.notFound().build();
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getEmpleadoById(@PathVariable Integer id){
+        try {
+            Empleado empleado = empleadoService.getEmpleadoById(id);
+            if (empleado != null) {
+                return ResponseEntity.ok(empleado);
+            }else {
+               return ResponseEntity.status(404).body("No se encontro el empleado");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
 }
