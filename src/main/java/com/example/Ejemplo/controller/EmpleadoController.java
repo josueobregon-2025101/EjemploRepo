@@ -30,4 +30,17 @@ public class EmpleadoController {
          return ResponseEntity.badRequest().body(e.getMessage());
      }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarEmpleado(@PathVariable Integer id,@RequestBody Empleado empleado){
+
+        Empleado actualizado = empleadoService.updateEmpleado(id,empleado);
+        if (actualizado != null ){
+            return ResponseEntity.ok(actualizado);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
