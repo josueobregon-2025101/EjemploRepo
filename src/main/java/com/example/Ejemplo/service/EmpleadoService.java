@@ -2,7 +2,6 @@ package com.example.Ejemplo.service;
 
 import com.example.Ejemplo.model.Empleado;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
