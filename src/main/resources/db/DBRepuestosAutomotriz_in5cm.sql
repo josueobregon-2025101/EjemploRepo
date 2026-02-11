@@ -46,53 +46,6 @@ references Empleados(id_empleado) on delete cascade,
 references Repuestos(id_repuesto) on delete cascade
 );
 
-INSERT INTO Proveedores (nombre_proveedor, telefono_proveedor, direccion, email_proveedor) VALUES
-('AutoPartes Lopez', 55512345, 'Zona 1, Ciudad de Guatemala', 'contacto@autoparteslopez.com'),
-('Repuestos El Motor', 55523456, 'Zona 5, Ciudad de Guatemala', 'ventas@elmotor.com'),
-('Distribuidora Ramirez', 55534567, 'Zona 7, Ciudad de Guatemala', 'ramirez@distribuidora.com'),
-('Importadora Gomez', 55545678, 'Zona 9, Ciudad de Guatemala', 'gomez@importadora.com'),
-('AutoServicios Perez', 55556789, 'Zona 11, Ciudad de Guatemala', 'perez@autoservicios.com'),
-('Repuestos Centro', 55567890, 'Zona 12, Ciudad de Guatemala', 'centro@repuestos.com'),
-('Motor y Más', 55578901, 'Zona 14, Ciudad de Guatemala', 'motorymas@gmail.com'),
-('Partes Express', 55589012, 'Zona 15, Ciudad de Guatemala', 'partesexpress@gmail.com'),
-('Autopartes del Sur', 55590123, 'Villa Nueva', 'sur@autopartes.com'),
-('Repuestos Nacionales', 55501234, 'Mixco', 'nacionales@repuestos.com');
-
-INSERT INTO Empleados (nombre_empleado, apellido_empleado, puesto_empleado, email_empleado) VALUES
-('Carlos', 'Martinez', 'Vendedor', 'carlos.martinez@empresa.com'),
-('Ana', 'Lopez', 'Cajera', 'ana.lopez@empresa.com'),
-('Luis', 'Hernandez', 'Vendedor', 'luis.hernandez@empresa.com'),
-('Maria', 'Gomez', 'Administradora', 'maria.gomez@empresa.com'),
-('Jorge', 'Perez', 'Vendedor', 'jorge.perez@empresa.com'),
-('Sofia', 'Ramirez', 'Cajera', 'sofia.ramirez@empresa.com'),
-('Pedro', 'Castillo', 'Supervisor', 'pedro.castillo@empresa.com'),
-('Lucia', 'Morales', 'Vendedor', 'lucia.morales@empresa.com'),
-('Diego', 'Alvarez', 'Bodega', 'diego.alvarez@empresa.com'),
-('Elena', 'Cruz', 'Contadora', 'elena.cruz@empresa.com');
-
-INSERT INTO Repuestos (nombre_repuesto, categoria_repuesto, precio_compra, precio_venta, id_proveedor) VALUES
-('Filtro de aceite', 'Motor', 50.00, 75.00, 1),
-('Bujía', 'Encendido', 20.00, 35.00, 2),
-('Pastillas de freno', 'Frenos', 120.00, 180.00, 3),
-('Batería 12V', 'Eléctrico', 450.00, 600.00, 4),
-('Amortiguador', 'Suspensión', 300.00, 420.00, 5),
-('Radiador', 'Enfriamiento', 800.00, 1050.00, 6),
-('Aceite 20W50', 'Lubricantes', 90.00, 130.00, 7),
-('Correa de tiempo', 'Motor', 150.00, 220.00, 8),
-('Alternador', 'Eléctrico', 900.00, 1200.00, 9),
-('Disco de freno', 'Frenos', 200.00, 280.00, 10);
-
-INSERT INTO Ventas (fecha_venta, cantidad, total, id_empleado, id_repuesto) VALUES
-('2026-01-10', 2, 150.00, 1, 1),
-('2026-01-11', 1, 35.00, 2, 2),
-('2026-01-12', 3, 540.00, 3, 3),
-('2026-01-13', 1, 600.00, 4, 4),
-('2026-01-14', 2, 840.00, 5, 5),
-('2026-01-15', 1, 1050.00, 6, 6),
-('2026-01-16', 4, 520.00, 7, 7),
-('2026-01-17', 1, 220.00, 8, 8),
-('2026-01-18', 1, 1200.00, 9, 9),
-('2026-01-19', 2, 560.00, 10, 10);
 
 -- procedimientos para crear
 -- PROVEEDORES
@@ -280,3 +233,47 @@ create procedure sp_readAllVentas()
     select * from Ventas order by id_venta;
     end $$
 Delimiter ;
+
+Call sp_crearP('AutoPartes Lopez', 55512345, 'Zona 1, Ciudad de Guatemala', 'contacto@autoparteslopez.com');
+Call sp_crearP('Repuestos El Motor', 55523456, 'Zona 5, Ciudad de Guatemala', 'ventas@elmotor.com');
+Call sp_crearP('Distribuidora Ramirez', 55534567, 'Zona 7, Ciudad de Guatemala', 'ramirez@distribuidora.com');
+Call sp_crearP('Importadora Gomez', 55545678, 'Zona 9, Ciudad de Guatemala', 'gomez@importadora.com');
+Call sp_crearP('AutoServicios Perez', 55556789, 'Zona 11, Ciudad de Guatemala', 'perez@autoservicios.com');
+Call sp_crearP('Repuestos Centro', 55567890, 'Zona 12, Ciudad de Guatemala', 'centro@repuestos.com');
+Call sp_crearP('Motor y Más', 55578901, 'Zona 14, Ciudad de Guatemala', 'motorymas@gmail.com');
+Call sp_crearP('Partes Express', 55589012, 'Zona 15, Ciudad de Guatemala', 'partesexpress@gmail.com');
+Call sp_crearP('Autopartes del Sur', 55590123, 'Villa Nueva', 'sur@autopartes.com');
+Call sp_crearP('Repuestos Nacionales', 55501234, 'Mixco', 'nacionales@repuestos.com');
+
+Call sp_crearE('Carlos', 'Martinez', 'Vendedor', 'carlos.martinez@empresa.com');
+Call sp_crearE('Ana', 'Lopez', 'Cajera', 'ana.lopez@empresa.com');
+Call sp_crearE('Luis', 'Hernandez', 'Vendedor', 'luis.hernandez@empresa.com');
+Call sp_crearE('Maria', 'Gomez', 'Administradora', 'maria.gomez@empresa.com');
+Call sp_crearE('Jorge', 'Perez', 'Vendedor', 'jorge.perez@empresa.com');
+Call sp_crearE('Sofia', 'Ramirez', 'Cajera', 'sofia.ramirez@empresa.com');
+Call sp_crearE('Pedro', 'Castillo', 'Supervisor', 'pedro.castillo@empresa.com');
+Call sp_crearE('Lucia', 'Morales', 'Vendedor', 'lucia.morales@empresa.com');
+Call sp_crearE('Diego', 'Alvarez', 'Bodega', 'diego.alvarez@empresa.com');
+Call sp_crearE('Elena', 'Cruz', 'Contadora', 'elena.cruz@empresa.com');
+
+Call sp_crearR('Filtro de aceite', 'Motor', 50.00, 75.00, 1);
+Call sp_crearR('Bujía', 'Encendido', 20.00, 35.00, 2);
+Call sp_crearR('Pastillas de freno', 'Frenos', 120.00, 180.00, 3);
+Call sp_crearR('Batería 12V', 'Eléctrico', 450.00, 600.00, 4);
+Call sp_crearR('Amortiguador', 'Suspensión', 300.00, 420.00, 5);
+Call sp_crearR('Radiador', 'Enfriamiento', 800.00, 1050.00, 6);
+Call sp_crearR('Aceite 20W50', 'Lubricantes', 90.00, 130.00, 7);
+Call sp_crearR('Correa de tiempo', 'Motor', 150.00, 220.00, 8);
+Call sp_crearR('Alternador', 'Eléctrico', 900.00, 1200.00, 9);
+Call sp_crearR('Disco de freno', 'Frenos', 200.00, 280.00, 10);
+
+Call sp_crearV('2026-01-10', 2, 150.00, 1, 1);
+Call sp_crearV('2026-01-11', 1, 35.00, 2, 2);
+Call sp_crearV('2026-01-12', 3, 540.00, 3, 3);
+Call sp_crearV('2026-01-13', 1, 600.00, 4, 4);
+Call sp_crearV('2026-01-14', 2, 840.00, 5, 5);
+Call sp_crearV('2026-01-15', 1, 1050.00, 6, 6);
+Call sp_crearV('2026-01-16', 4, 520.00, 7, 7);
+Call sp_crearV('2026-01-17', 1, 220.00, 8, 8);
+Call sp_crearV('2026-01-18', 1, 1200.00, 9, 9);
+Call sp_crearV('2026-01-19', 2, 560.00, 10, 10);
