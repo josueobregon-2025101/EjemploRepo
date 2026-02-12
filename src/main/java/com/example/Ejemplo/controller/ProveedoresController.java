@@ -24,6 +24,11 @@ public class ProveedoresController {
         return proveedoresService.getAllProveedores();
     }
 
+    @GetMapping({"/"})
+    public ResponseEntity<?> getEmpleadoSinId(){
+        return ResponseEntity.badRequest().body("Error: Ingrese un id");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?>  getProveedorById(@PathVariable Integer id){
         try {
@@ -41,10 +46,21 @@ public class ProveedoresController {
     @PostMapping
     public ResponseEntity<?> saveProveedores(@Valid @RequestBody Proveedores proveedores){
         try {
-            Proveedores createdP = proveedoresService.saveProveedores(proveedores);
-            if (proveedores != null){
-                return new ResponseEntity<>(createdP, HttpStatus.CREATED);
-            }else return ResponseEntity.badRequest().body("No se pudo crear el Proveedor");
+            if (proveedores.getNombreProveedor() == null || proveedores.getNombreProveedor().isBlank()) {
+                return ResponseEntity.status(400).body("El nombre del proveedor es necesario");
+            }
+            if (proveedores.getDireccion() == null || proveedores.getDireccion().isBlank()) {
+                return ResponseEntity.badRequest().body("La direccion del proveedor es necesario");
+            }
+            if (proveedores.getEmailProveedor() == null || proveedores.getEmailProveedor().isBlank()) {
+                return ResponseEntity.badRequest().body("El email del proveedor es necesario");
+            }
+            if (proveedores.getTelefono_proveedor() == null) {
+                return ResponseEntity.badRequest().body("El telefono del proveedor es necesario");
+            }else {
+                Proveedores createdP = proveedoresService.saveProveedores(proveedores);
+                    return new ResponseEntity<>(createdP, HttpStatus.CREATED);
+            }
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -53,12 +69,25 @@ public class ProveedoresController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProveedores(@Valid @PathVariable Integer id, @Valid @RequestBody Proveedores proveedores){
         try {
-            Proveedores existente = proveedoresService.getProveedorById(id);
-            if (existente != null){
-                Proveedores NewProveedor = proveedoresService.updateProveedores(id,proveedores);
-                return ResponseEntity.ok(NewProveedor);
+            if (proveedores.getNombreProveedor() == null || proveedores.getNombreProveedor().isBlank()) {
+                return ResponseEntity.status(400).body("El nombre del proveedor es necesario");
+            }
+            if (proveedores.getDireccion() == null || proveedores.getDireccion().isBlank()) {
+                return ResponseEntity.badRequest().body("La direccion del proveedor es necesario");
+            }
+            if (proveedores.getEmailProveedor() == null || proveedores.getEmailProveedor().isBlank()) {
+                return ResponseEntity.badRequest().body("El email del proveedor es necesario");
+            }
+            if (proveedores.getTelefono_proveedor() == null) {
+                return ResponseEntity.badRequest().body("El telefono del proveedor es necesario");
             }else {
-                return ResponseEntity.status(404).body("No se encontro el proveedor id: "+id);
+                Proveedores existente = proveedoresService.getProveedorById(id);
+                if (existente != null) {
+                    Proveedores NewProveedor = proveedoresService.updateProveedores(id, proveedores);
+                    return ResponseEntity.ok(NewProveedor);
+                } else {
+                    return ResponseEntity.status(404).body("No se encontro el proveedor id: " + id);
+                }
             }
         }catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
