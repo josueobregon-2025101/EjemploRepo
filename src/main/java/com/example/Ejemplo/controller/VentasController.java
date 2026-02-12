@@ -42,6 +42,21 @@ public class VentasController {
     @PostMapping
     public ResponseEntity<?> saveVenta(@RequestBody Ventas ventas){
        try {
+           if (ventas.getFechaVenta() == null ) {
+               return ResponseEntity.status(400).body("La fecha de venta es necesaria");
+           }
+           if (ventas.getCantidad() == null ) {
+               return ResponseEntity.badRequest().body("La cantidad de la venta es necesario");
+           }
+           if (ventas.getTotal() == null ) {
+               return ResponseEntity.badRequest().body("El total de la venta es necesario");
+           }
+           if (ventas.getIdEmpleado() == null) {
+               return ResponseEntity.badRequest().body("El Id de empleado es necesario");
+           }
+           if (ventas.getIdRepuesto() == null) {
+               return ResponseEntity.badRequest().body("El id del repuesto es necesario");
+           }
            Ventas createVenta = ventasService.saveVenta(ventas);
            return new ResponseEntity<>(createVenta, HttpStatus.CREATED);
        }catch (IllegalArgumentException e){
@@ -52,6 +67,21 @@ public class VentasController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateVenta(@PathVariable Integer id, @RequestBody Ventas ventas){
         try {
+            if (ventas.getFechaVenta() == null ) {
+                return ResponseEntity.status(400).body("La fecha de venta es necesaria");
+            }
+            if (ventas.getCantidad() == null ) {
+                return ResponseEntity.badRequest().body("La cantidad de la venta es necesario");
+            }
+            if (ventas.getTotal() == null ) {
+                return ResponseEntity.badRequest().body("El total de la venta es necesario");
+            }
+            if (ventas.getIdEmpleado() == null) {
+                return ResponseEntity.badRequest().body("El Id de empleado es necesario");
+            }
+            if (ventas.getIdRepuesto() == null) {
+                return ResponseEntity.badRequest().body("El id del repuesto es necesario");
+            }
             Ventas NewVentas = ventasService.updateVenta(id,ventas);
             return ResponseEntity.ok(NewVentas);
         } catch (IllegalArgumentException e) {
