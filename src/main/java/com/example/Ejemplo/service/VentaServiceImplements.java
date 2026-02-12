@@ -32,7 +32,7 @@ public class VentaServiceImplements implements VentasService{
     @Override
     public Ventas updateVenta(Integer id, Ventas ventas) {
         Optional<Ventas> VentaExistente = ventasRepository.findById(id);
-        if (VentaExistente != null){
+        if (VentaExistente.isPresent()){
             Ventas ventaNew = VentaExistente.get();
             ventaNew.setCantidad(ventas.getCantidad());
             ventaNew.setFechaVenta(ventas.getFechaVenta());
