@@ -23,6 +23,11 @@ public class RepuestoController {
     @GetMapping
     public List<Repuesto> getAllRepuestos(){return repuestoService.getAllRepuestos();}
 
+    @GetMapping({"/"})
+    public ResponseEntity<?> getRepuestoSinId(){
+        return ResponseEntity.badRequest().body("Error: Ingrese un id");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getRepuestoById(@PathVariable Integer id) {
         try {
@@ -39,8 +44,24 @@ public class RepuestoController {
     @PostMapping
     public ResponseEntity<Object> createRepuesto(@Valid @RequestBody Repuesto repuesto){
         try {
-            Repuesto repuestoCreated = repuestoService.saveRepuesto(repuesto);
-            return new ResponseEntity<>(repuestoCreated, HttpStatus.CREATED);
+            if (repuesto.getNombreRepuesto() == null || repuesto.getNombreRepuesto().isBlank()) {
+                return ResponseEntity.status(400).body("El nombre del repuesto es necesario");
+            }
+            if (repuesto.getCategoriaRepuesto() == null || repuesto.getCategoriaRepuesto().isBlank()) {
+                return ResponseEntity.badRequest().body("La categoria del repuesto es necesario");
+            }
+            if (repuesto.getIdProveedor() == null ) {
+                return ResponseEntity.badRequest().body("El id del proveedor es necesario");
+            }
+            if (repuesto.getPrecioCompra() == null) {
+                return ResponseEntity.badRequest().body("El Precio de compra del proveedor es necesario");
+            }
+            if (repuesto.getPrecioVenta() == null) {
+                return ResponseEntity.badRequest().body("El precio de venta del repuesto es necesario");
+            }else {
+                Repuesto repuestoCreated = repuestoService.saveRepuesto(repuesto);
+                return new ResponseEntity<>(repuestoCreated, HttpStatus.CREATED);
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -50,18 +71,25 @@ public class RepuestoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRepuestos(@PathVariable Integer id, @Valid @RequestBody Repuesto repuesto){
         try {
+            if (repuesto.getNombreRepuesto() == null || repuesto.getNombreRepuesto().isBlank()) {
+                return ResponseEntity.status(400).body("El nombre del repuesto es necesario");
+            }
+            if (repuesto.getCategoriaRepuesto() == null || repuesto.getCategoriaRepuesto().isBlank()) {
+                return ResponseEntity.badRequest().body("La categoria del repuesto es necesario");
+            }
+            if (repuesto.getIdProveedor() == null ) {
+                return ResponseEntity.badRequest().body("El id del proveedor es necesario");
+            }
+            if (repuesto.getPrecioCompra() == null) {
+                return ResponseEntity.badRequest().body("El Precio de compra del proveedor es necesario");
+            }
+            if (repuesto.getPrecioVenta() == null) {
+                return ResponseEntity.badRequest().body("El precio de venta del repuesto es necesario");
+            }
             Repuesto repuestoExistente = repuestoService.getRepuestoById(id);
             if (repuestoExistente != null){
-                try {
-                    Repuesto repuestoNew = repuestoService.updateRepuesto(id,repuesto);
-                    if (repuestoNew != null){
-                        return ResponseEntity.ok(repuestoNew);
-                    }else {
-                       return ResponseEntity.badRequest().body("Ingreso datos incorrectos");
-                    }
-                }catch (IllegalArgumentException e){
-                    return ResponseEntity.badRequest().body(e.getMessage());
-                }
+                Repuesto repuestoNew = repuestoService.updateRepuesto(id,repuesto);
+                return ResponseEntity.ok(repuestoNew);
             }else {
                 return ResponseEntity.status(404).body("No se encontro el repuesto");
             }
