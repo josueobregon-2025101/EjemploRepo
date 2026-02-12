@@ -21,11 +21,33 @@ public class EmpleadoController {
     @GetMapping
     public List<Empleado> getAllEmpleados(){return empleadoService.getAllEmpleados();}
 
+    // Id no ingresado
+    @GetMapping({"/"})
+    public ResponseEntity<?> getEmpleadoSinId(){
+        return ResponseEntity.badRequest().body("Error: Ingrese un id");
+    }
+
     @PostMapping
     public ResponseEntity<Object> createEmpleado(@Valid @RequestBody Empleado empleado){
      try {
-         Empleado createdEmpleado = empleadoService.saveEmpleado(empleado);
-         return new ResponseEntity<>(createdEmpleado, HttpStatus.CREATED);
+         if (empleado.getNombreEmpleado() == null || empleado.getNombreEmpleado().isBlank()) {
+             return ResponseEntity.status(400).body("El nombre del empleado es necesario");
+         }
+
+         if (empleado.getApellidoEmpleado() == null || empleado.getApellidoEmpleado().isBlank()) {
+             return ResponseEntity.badRequest().body("El apellido del empleado es necesario");
+         }
+
+         if (empleado.getEmailEmpleado() == null || empleado.getEmailEmpleado().isBlank()) {
+             return ResponseEntity.badRequest().body("El email del empleado es necesario");
+         }
+
+         if (empleado.getPuestoEmpleado() == null || empleado.getPuestoEmpleado().isBlank()) {
+             return ResponseEntity.badRequest().body("El puesto del empleado es necesario");
+         }else {
+             Empleado createdEmpleado = empleadoService.saveEmpleado(empleado);
+             return new ResponseEntity<>(createdEmpleado, HttpStatus.CREATED);
+         }
      } catch (IllegalArgumentException e) {
          return ResponseEntity.badRequest().body(e.getMessage());
      }
@@ -34,12 +56,29 @@ public class EmpleadoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarEmpleado(@PathVariable Integer id,@RequestBody Empleado empleado){
        try {
-           Empleado actualizado = empleadoService.updateEmpleado(id,empleado);
-           if (actualizado != null ){
-               return ResponseEntity.ok(actualizado);
+           if (empleado.getNombreEmpleado() == null || empleado.getNombreEmpleado().isBlank()) {
+               return ResponseEntity.status(400).body("El nombre del empleado es necesario");
+           }
+
+           if (empleado.getApellidoEmpleado() == null || empleado.getApellidoEmpleado().isBlank()) {
+               return ResponseEntity.badRequest().body("El apellido del empleado es necesario");
+           }
+
+           if (empleado.getEmailEmpleado() == null || empleado.getEmailEmpleado().isBlank()) {
+               return ResponseEntity.badRequest().body("El email del empleado es necesario");
+           }
+
+           if (empleado.getPuestoEmpleado() == null || empleado.getPuestoEmpleado().isBlank()) {
+               return ResponseEntity.badRequest().body("El puesto del empleado es necesario");
            }
            else {
-               return ResponseEntity.status(404).body("No se encontro el empleado");
+               Empleado actualizado = empleadoService.updateEmpleado(id,empleado);
+               if (actualizado != null ){
+                   return ResponseEntity.ok(actualizado);
+               }
+               else {
+                   return ResponseEntity.status(404).body("No se encontro el empleado");
+               }
            }
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
